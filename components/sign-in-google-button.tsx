@@ -13,5 +13,5 @@ export default function SignInGoogleButton() {
     });
     return { error };
   };
-  return <Button onClick={signInWithGoogle}>Sign in with Google</Button>;
+  return <Button onClick={signInWithGoogle}>Войти через Google</Button>;
 }

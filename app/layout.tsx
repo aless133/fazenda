@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru" className={geistSans.className} suppressHydrationWarning>
-      <body className="bg-background text-foreground">
+      <body className="bg-background text-foreground min-w-320px">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <main className="min-h-screen flex flex-col items-center">
             <div className="flex-1 w-full flex flex-col gap-8 items-center">
