@@ -1,7 +1,6 @@
 import DeployButton from "@/components/deploy-button";
 import { EnvVarWarning } from "@/components/env-var-warning";
 import HeaderAuth from "@/components/header-auth";
-import { ThemeSwitcher } from "@/components/theme-switcher";
 import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
@@ -12,8 +11,8 @@ const defaultUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` 
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Fazenda",
-  description: "The fastest way to build apps with Next.js and Supabase",
+  title: "Фазенда",
+  description: "Учет грядок и всего что растет",
 };
 
 const geistSans = Geist({
