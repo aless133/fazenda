@@ -1,5 +1,7 @@
+import Image from "next/image";
+import logoImg from "@/public/logo.png";
 import { EnvVarWarning } from "@/components/env-var-warning";
-import HeaderAuth from "@/components/header-auth";
+import HeaderUser from "@/components/header-user";
 import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import Link from "next/link";
 
@@ -9,18 +11,18 @@ export default async function LayoutUser({
   children: React.ReactNode;
 }>) {
   return (
-    <main className="min-h-screen flex flex-col items-center">
-      <div className="flex-1 w-full flex flex-col gap-8 items-center">
-        <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-          <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
-            <div className="flex gap-5 items-center font-semibold">
-              <Link href={"/"}>Фазенда</Link>
-            </div>
-            {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
-          </div>
-        </nav>
-        <div className="flex flex-col gap-20 max-w-5xl p-5">{children}</div>
-      </div>
-    </main>
+    <div className="w-full min-h-screen flex flex-col flex-1 gap-8 items-center">
+      <nav className="w-full flex justify-center border-b border-b-foreground/10 h-14">
+        <div className="container flex justify-between items-center py-3 text-sm">
+          <Link href={"/"}>
+            <Image src={logoImg} alt="Фазенда" className="max-w-10"/>
+          </Link>
+          {!hasEnvVars ? <EnvVarWarning /> : <HeaderUser />}
+        </div>
+      </nav>
+      <main className="container">
+        {children}
+      </main>
+    </div>
   );
 }

@@ -1,6 +1,6 @@
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
-import { createClient } from "@/utils/supabase/server";
+import { getUser } from "@/utils/supabase/server";
 import "./globals.css";
 import LayoutGuest from "./layout-guest";
 import LayoutUser from "./layout-user";
@@ -23,15 +23,15 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = await createClient();
-  const user = await supabase.auth.getUser();
-  console.log(user);
+  const user = await getUser();
 
   return (
     <html lang="ru" className={geistSans.className} suppressHydrationWarning>
-      <body className="bg-background text-foreground min-w-320px">
+      <body className="bg-background text-foreground min-w-minbody">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          {user.error ? <LayoutGuest children={children} /> : <LayoutUser children={children} />}
+          {/* <QueryClientProvider client={queryClient}> */}
+            {user.error ? <LayoutGuest children={children} /> : <LayoutUser children={children} />}
+          {/* </QueryClientProvider> */}
         </ThemeProvider>
       </body>
     </html>

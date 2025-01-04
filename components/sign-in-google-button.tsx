@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { Button } from "./ui/button";
 import { createClient } from "@/utils/supabase/client";
 
@@ -9,7 +10,7 @@ export default function SignInGoogleButton() {
       provider: "google",
       options: {
         redirectTo: `${window.location.origin}/auth-callback`,
-      },      
+      },
     });
     return { error };
   };

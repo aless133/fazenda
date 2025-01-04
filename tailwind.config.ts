@@ -7,7 +7,7 @@ const config = {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: "1rem",
       screens: {
         "2xl": "1400px",
       },
@@ -68,7 +68,7 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       spacing: {
-        "320px": "320px",
+        "minbody": "360px",
       },
     },
   },
