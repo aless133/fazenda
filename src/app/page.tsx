@@ -1,12 +1,7 @@
 import { BigIconButton } from "@/components/big-icon-button";
 import { type IconNames } from "@/components/icons";
-import { CheckCircle } from 'lucide-react';
 
-const blocks = [
-  { icon: "Home", title: "Участки", href: "/areas" },
-  // { icon: "CheckCircle", title: "Get Verified", href: "/verify" },
-  // { icon: "Smile", title: "Enjoy Features", href: "/features" },
-];
+const blocks = [{ icon: "LayoutDashboard", title: "Участки", href: "/areas" }];
 
 export default async function Page() {
   return (

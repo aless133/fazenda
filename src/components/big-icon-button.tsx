@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { icons, type IconNames } from "@/components/icons";
 import { type ComponentProps } from "react";
-import { Home } from "lucide-react";
 
 type Props = ComponentProps<typeof Button> & {
   title: string;
@@ -15,7 +14,6 @@ type Props = ComponentProps<typeof Button> & {
 
 export function BigIconButton({ title, icon, href, onClick, ...props }: Props) {
   const Icon = icons[icon];
-  //console.log("BigIconButton window", typeof window);
   if (href)
     return (
       <Link
