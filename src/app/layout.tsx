@@ -1,6 +1,6 @@
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
-import { getUser } from "@/lib/supabase/server";
+import { getUser, getUserInfo } from "@/lib/supabase/server";
 import "./globals.css";
 import LayoutGuest from "./layout-guest";
 import LayoutUser from "./layout-user";
@@ -29,9 +29,7 @@ export default async function RootLayout({
     <html lang="ru" className={geistSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground min-w-minbody">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          {/* <QueryClientProvider client={queryClient}> */}
-            {user.error ? <LayoutGuest children={children} /> : <LayoutUser children={children} />}
-          {/* </QueryClientProvider> */}
+          {user.error ? <LayoutGuest>{children}</LayoutGuest> : <LayoutUser user={await getUserInfo(user)}>{children}</LayoutUser>}
         </ThemeProvider>
       </body>
     </html>

@@ -1,4 +1,5 @@
 import { createServerClient } from "@supabase/ssr";
+import { UserResponse } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -30,10 +31,10 @@ export const getUser = async () => {
   return supabase.auth.getUser();
 };
 
-export const getUserInfo = async () => {
-  const user = await getUser();
+export const getUserInfo = async (u: UserResponse | undefined) => {
+  const user = u ?? (await getUser());
   if (user.error) {
     return redirect("/sign-in");
   }
-  return { id: user.data.user.id, email: user.data.user.email, name: user.data.user.user_metadata.name as string};
+  return { id: user.data.user.id, email: user.data.user.email, name: user.data.user.user_metadata.name as string };
 };
