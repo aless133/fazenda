@@ -31,7 +31,7 @@ export const getUser = async () => {
   return supabase.auth.getUser();
 };
 
-export const getUserInfo = async (u: UserResponse | undefined) => {
+export const getUserInfo = async (u?: UserResponse) => {
   const user = u ?? (await getUser());
   if (user.error) {
     return redirect("/sign-in");
