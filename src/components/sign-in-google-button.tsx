@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Button } from "./ui/button";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 
 export default function SignInGoogleButton() {
   const signInWithGoogle = async () => {

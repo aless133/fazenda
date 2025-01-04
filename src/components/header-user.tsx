@@ -1,6 +1,6 @@
 import { signOutAction } from "@/app/server-actions";
 import { Button } from "@/components/ui/button";
-import { getUserInfo } from "@/utils/supabase/server";
+import { getUserInfo } from "@/lib/supabase/server";
 import { LogOut } from "lucide-react";
 import Link from "next/link";
 

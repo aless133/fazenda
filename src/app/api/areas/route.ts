@@ -1,6 +1,6 @@
 // app/api/notes/route.ts
 //import { createClient } from '@supabase/supabase-js';
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 
 export async function GET(request: Request) {
   const supabase = await createClient();

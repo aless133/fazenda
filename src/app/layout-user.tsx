@@ -1,8 +1,8 @@
 import Image from "next/image";
-import logoImg from "@/public/logo.png";
+import logoImg from "@public/logo.png";
 import { EnvVarWarning } from "@/components/env-var-warning";
 import HeaderUser from "@/components/header-user";
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
+import { hasEnvVars } from "@/lib/supabase/check-env-vars";
 import Link from "next/link";
 
 export default async function LayoutUser({

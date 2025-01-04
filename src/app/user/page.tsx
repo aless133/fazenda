@@ -1,4 +1,4 @@
-import { getUser } from "@/utils/supabase/server";
+import { getUser } from "@/lib/supabase/server";
 import { InfoIcon } from "lucide-react";
 import { redirect } from "next/navigation";
 

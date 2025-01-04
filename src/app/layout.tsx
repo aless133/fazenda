@@ -1,6 +1,6 @@
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
-import { getUser } from "@/utils/supabase/server";
+import { getUser } from "@/lib/supabase/server";
 import "./globals.css";
 import LayoutGuest from "./layout-guest";
 import LayoutUser from "./layout-user";
