@@ -5,7 +5,7 @@ import "./globals.css";
 import LayoutGuest from "./layout-guest";
 import LayoutUser from "./layout-user";
 
-const defaultUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000";
+const defaultUrl = process.env.FAZENDA_URL ? process.env.FAZENDA_URL : "http://localhost:3000";
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
