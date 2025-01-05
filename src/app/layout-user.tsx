@@ -1,7 +1,7 @@
 import Image from "next/image";
 import logoImg from "@public/logo.png";
 import { EnvVarWarning } from "@/components/env-var-warning";
-import HeaderUser from "@/components/header-user";
+import { HeaderUser } from "@/components/header-user";
 import { hasEnvVars } from "@/lib/supabase/check-env-vars";
 import Link from "next/link";
 import LayoutUserClient from "./layout-user-client";

@@ -4,7 +4,7 @@ import { getUserInfo } from "@/lib/supabase/server";
 import { LogOut } from "lucide-react";
 import Link from "next/link";
 
-export default async function HeaderUser() {
+export async function HeaderUser() {
   const { name } = await getUserInfo();
   return (
     <div className="flex items-center gap-2">
