@@ -1,1 +1,1 @@
-export const theUrl = process.env.FAZENDA_URL ? process.env.FAZENDA_URL : "http://localhost:3000";
+export const theUrl = process.env.NEXT_PUBLIC_FAZENDA_URL || "fazenda_url_not_found";
