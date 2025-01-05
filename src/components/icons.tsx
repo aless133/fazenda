@@ -1,13 +1,11 @@
-import { Home } from "lucide-react";
-import { CheckCircle } from "lucide-react";
-import { Smile } from "lucide-react";
-import { LayoutDashboard } from "lucide-react";
+import { Home, CheckCircle,Smile,LayoutDashboard,Grid2x2Plus } from "lucide-react";
 
 export const icons = {
   Home: Home,
   CheckCircle: CheckCircle,
   Smile: Smile,
   LayoutDashboard: LayoutDashboard,
+  Grid2x2Plus: Grid2x2Plus,
 };
 
 export type IconNames = keyof typeof icons;

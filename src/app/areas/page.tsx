@@ -1,31 +1,19 @@
 "use client";
 import { useEffect, useState } from "react";
-import {
-  useQuery,
-  // useMutation,
-  // useQueryClient,
-  // QueryClient,
-  // QueryClientProvider,
-} from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { createList } from "@/query/common";
+import { BigIconButton } from "@/components/big-icon-button";
+import { IArea} from '@/types';
 
 export default function Page() {
-
-  const { isPending, error, data: areas } = useQuery({
-    queryKey: ['repoData'],
-    queryFn: () =>
-      fetch('https://api.github.com/repos/TanStack/query').then((res) =>
-        res.json(),
-      ),
-  })
-
-  if (isPending) return 'Loading...'
-  if (error) return 'An error has occurred: ' + error.message
-
-
+  const { data: areas } = useQuery(createList<IArea[]>('areas'));
 
   return (
-    <>
-      <pre>{JSON.stringify(areas, null, 2)}</pre>
-    </>
+    <div className="flex flex-col gap-8 max-w-60 mx-auto">
+      {areas ? areas.map((area, index) => 
+        <BigIconButton key={index} icon="LayoutDashboard" title={area.name} href={`/areas/${area.id}`} />
+      ) : null}
+      <BigIconButton icon="Grid2x2Plus" title="Добавить новый" href="/areas/new" />
+    </div>    
   );
 }

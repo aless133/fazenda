@@ -4,11 +4,10 @@ import { getUser, getUserInfo } from "@/lib/supabase/server";
 import "./globals.css";
 import LayoutGuest from "./layout-guest";
 import LayoutUser from "./layout-user";
-
-const defaultUrl = process.env.FAZENDA_URL ? process.env.FAZENDA_URL : "http://localhost:3000";
+import { theUrl } from "@/global";
 
 export const metadata = {
-  metadataBase: new URL(defaultUrl),
+  metadataBase: new URL(theUrl),
   title: "Фазенда",
   description: "Учет грядок и всего что растет",
 };
