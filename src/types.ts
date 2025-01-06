@@ -1,6 +1,8 @@
 export interface IArea {
   id: string;
   name: string;
+  x:number;
+  y:number;
   width: number;
   length: number;
   user_id: string;
