@@ -9,6 +9,7 @@ import { ErrorInfo } from "@/components/error-info";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { getUrl } from "@/lib/utils";
+import { Area } from "@/components/area/area";
 
 export default function Page() {
   const params = useParams<{ id: string }>();
@@ -19,7 +20,7 @@ export default function Page() {
   return (
     <div>
       <h1 className="text-xl text-center mb-6">Участок "{area.name}"</h1>
-      <pre>{JSON.stringify(area, null, 2)}</pre>
+      <Area area={area}/>
       <Button variant="outline" asChild className="w-full mb-6">
           <Link href={getUrl(area,'edit')}>Изменить параметры участка</Link>
       </Button>

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "./ui/button";
 import { createClient } from "@/lib/supabase/client";
 
-export default function SignInGoogleButton() {
+export function SignInGoogleButton() {
   const signInWithGoogle = async () => {
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithOAuth({

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import logoImg from "@public/logo.png";
-import SignInGoogleButton from "@/components/sign-in-google-button";
+import { SignInGoogleButton } from "@/components/sign-in-google-button";
 
 export default async function SignIn() {
   return (
