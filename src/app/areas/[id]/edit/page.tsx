@@ -6,6 +6,7 @@ import { createOne } from "@/query/common";
 import { IArea } from "@/types";
 import { Loader } from "@/components/loader";
 import { ErrorInfo } from "@/components/error-info";
+import { AreaForm } from "@/components/area-form";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { getUrl } from "@/lib/utils";
@@ -18,14 +19,8 @@ export default function Page() {
 
   return (
     <div>
-      <h1 className="text-xl text-center mb-6">Участок "{area.name}"</h1>
-      <pre>{JSON.stringify(area, null, 2)}</pre>
-      <Button variant="outline" asChild className="w-full mb-6">
-          <Link href={getUrl(area,'edit')}>Изменить параметры участка</Link>
-      </Button>
-      <Button variant="outline" asChild className="w-full">
-          <Link href="/areas">Назад</Link>
-      </Button>
+      <h1 className="text-xl text-center mb-6">Изменить участок "{area.name}"</h1>
+      <AreaForm initialData={area} back={getUrl(area)}/>
     </div>
   );
 }
