@@ -29,6 +29,13 @@ export const createOne = <T>(key: string, id: string) => {
 
 export const request = async <T>(url: URL) => {
   const response = await fetch(url.toString());
-  if (!response.ok) throw new Error(`Ошибка запроса ${url.toString()} - ${response.status} ${response.statusText}`);
+  if (!response.ok) {
+    let errorMessage = `Ошибка запроса ${url.toString()} - ${response.status} ${response.statusText}`;
+    const errorText = await response.text();
+    if (errorText) {
+      errorMessage += `: ${errorText}`;
+    }
+    throw new Error(errorMessage); // Throw the error with the message
+  }
   return response.json() as Promise<T>;
 };

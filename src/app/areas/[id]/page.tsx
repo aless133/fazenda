@@ -5,11 +5,13 @@ import { useParams, useRouter } from "next/navigation";
 import { createOne } from "@/query/common";
 import { IArea } from "@/types";
 import { Loader } from "@/components/loader";
+import { ErrorInfo } from "@/components/error-info";
 
 export default function Page() {
   const params = useParams<{ id: string }>();
-  const { data: area, isPending } = useQuery(createOne<IArea>('areas',params.id));
+  const { data: area, isPending, error } = useQuery(createOne<IArea>("areas", params.id));
   if (isPending) return <Loader />;
+  if (error) return <ErrorInfo error={error} />;
 
   return (
     <>

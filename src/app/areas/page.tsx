@@ -5,11 +5,13 @@ import { createList } from "@/query/common";
 import { BigIconButton } from "@/components/big-icon-button";
 import { IArea } from "@/types";
 import { Loader } from "@/components/loader";
+import { ErrorInfo } from "@/components/error-info";
 
 export default function Page() {
-  const { data: areas, isPending } = useQuery(createList<IArea>("areas"));
+  const { data: areas, isPending, error } = useQuery(createList<IArea>("areas"));
 
   if (isPending) return <Loader />;
+  if (error) return <ErrorInfo error={error} />;
 
   return (
     <div className="flex flex-col gap-8 max-w-60 mx-auto">
