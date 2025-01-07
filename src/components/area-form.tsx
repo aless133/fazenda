@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { getUrl } from "@/lib/utils";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { useMutationCreate, useMutationUpdate, useMutationDelete } from "@/query/common";
 
 interface AreaFormProps {
   initialData?: IArea;
@@ -18,11 +19,23 @@ interface AreaFormProps {
 export const AreaForm: React.FC<AreaFormProps> = ({ initialData, back }) => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const create = useMutationCreate<IArea>("areas");
+  const update = useMutationUpdate<IArea>("areas", initialData?.id ?? "");
+  const del = useMutationDelete<IArea>("areas", initialData?.id ?? "");
+
+  useEffect(() => {
+    if (update.error) setError(update.error.message);
+    if (create.error) setError(create.error.message);
+    if (del.error) setError(del.error.message);
+
+    if (update.isSuccess) router.push(getUrl(update.data[0]));
+    if (create.isSuccess) router.push(getUrl(create.data[0]));
+    if (del.isSuccess) router.push("/areas/");
+  }, [update.error, create.error, del.error, update.isSuccess, create.isSuccess, del.isSuccess]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
-
     const formData = new FormData(e.currentTarget);
     const area = {
       id: initialData ? initialData.id : undefined,
@@ -31,41 +44,13 @@ export const AreaForm: React.FC<AreaFormProps> = ({ initialData, back }) => {
       length: Number(formData.get("length")),
     };
 
-    try {
-      const response = await fetch("/api/areas" + (initialData ? `/${initialData.id}` : ""), {
-        method: initialData ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(area),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to submit the form");
-      }
-
-      const data: IArea = (await response.json())[0];
-      router.push(getUrl(data));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Непредвиденная ошибка");
-    }
+    if (initialData) update.mutate(area);
+    else create.mutate(area);
   };
 
-  const handleDelete = async ()=>{
-    if (confirm('Подтвердждаете удаление')) {
-      try {
-        const response = await fetch(`/api/areas/${initialData!.id}`, {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({id:initialData!.id}),
-        });  
-        if (!response.ok) {
-          throw new Error("Ошибка удаления");
-        }
-        router.push('/areas/');
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Непредвиденная ошибка");
-      }     
-    }
-  }
+  const handleDelete = async () => {
+    if (confirm("Подтвердждаете удаление")) del.mutate();
+  };
 
   return (
     <form onSubmit={handleSubmit} className="m-auto max-w-xs flex-col space-y-4">

@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { createList } from "@/query/common";
+import { useQueryList } from "@/query/common";
 import { BigIconButton } from "@/components/big-icon-button";
 import { IArea } from "@/types";
 import { Loader } from "@/components/loader";
@@ -9,7 +8,7 @@ import { ErrorInfo } from "@/components/error-info";
 import { getUrl } from "@/lib/utils";
 
 export default function Page() {
-  const { data: areas, isPending, error } = useQuery(createList<IArea>("areas"));
+  const { data: areas, isPending, error } = useQueryList<IArea>("areas");
 
   if (isPending) return <Loader />;
   if (error) return <ErrorInfo error={error} />;

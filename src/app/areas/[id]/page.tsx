@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
-import { createOne } from "@/query/common";
+import { useQueryOne } from "@/query/common";
 import { IArea } from "@/types";
 import { Loader } from "@/components/loader";
 import { ErrorInfo } from "@/components/error-info";
@@ -13,12 +13,12 @@ import { Area } from "@/components/area/area";
 
 export default function Page() {
   const params = useParams<{ id: string }>();
-  const { data: area, isPending, error } = useQuery(createOne<IArea>("areas", params.id));
+  const { data: area, isPending, error } = useQueryOne<IArea>("areas", params.id);
   if (isPending) return <Loader />;
   if (error) return <ErrorInfo error={error} />;
 
   return (
-    <div>
+    <div className="pb-6">
       <h1 className="text-xl text-center mb-6">Участок "{area.name}"</h1>
       <Area area={area}/>
       <Button variant="outline" asChild className="w-full mb-6">
