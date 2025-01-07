@@ -1,9 +1,8 @@
 import React, { useRef, useState } from "react";
 import s from "./area.module.css";
 import { type IArea } from "@/types";
-import { Dimensions } from "./dimensions";
-import { House, RectangleVertical, TreeDeciduous } from "lucide-react";
-import { Button } from "../ui/button";
+// import { Dimensions } from "./dimensions";
+import { AreaButtons } from "./buttons";
 
 type Props = {
   area: IArea;
@@ -65,6 +64,8 @@ export function Area({ area, children }: Props) {
     if (!add || !addDrag.includes(add)) return;
     const xy = getXY(getTouch(event));
     if (xy) {
+      event.preventDefault();
+      event.stopPropagation();
       setSelectionRect(new DOMRect(xy.x, xy.y, 0, 0));
       setIsSelecting(true);
     }
@@ -75,14 +76,17 @@ export function Area({ area, children }: Props) {
     if (!isSelecting || !selectionRect) return;
     const xy = getXY(getTouch(event));
     if (xy) {
-      setSelectionRect(new DOMRect(selectionRect.x, selectionRect.y, xy.x - selectionRect.x, xy.y - selectionRect.y));
       event.preventDefault();
+      event.stopPropagation();
+      setSelectionRect(new DOMRect(selectionRect.x, selectionRect.y, xy.x - selectionRect.x, xy.y - selectionRect.y));
     }
   };
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = (event: React.TouchEvent<SVGSVGElement>) => {
     if (!add || !addDrag.includes(add)) return;
     if (!isSelecting || !selectionRect) return;
+    event.preventDefault();
+    event.stopPropagation();
     setAdd("");
     setIsSelecting(false);
     console.log("Selection Rect:", selectionRect);
@@ -116,30 +120,7 @@ export function Area({ area, children }: Props) {
 
   return (
     <div>
-      <div className="my-6 flex flex-row flex-wrap gap-4 items-center">
-        <span>Добавить:</span>
-        <Button
-          variant="outline"
-          className={add == "bed" ? "!bg-gray-500 !text-white" : ""}
-          onClick={() => setAdd(add == "bed" ? "" : "bed")}
-        >
-          <RectangleVertical className="mr-1" /> Грядка
-        </Button>
-        <Button
-          variant="outline"
-          className={add == "tree" ? "!bg-gray-500 !text-white" : ""}
-          onClick={() => setAdd(add == "tree" ? "" : "tree")}
-        >
-          <TreeDeciduous className="mr-1" /> Дерево/куст
-        </Button>
-        <Button
-          variant="outline"
-          className={add == "building" ? "!bg-gray-500 !text-white" : ""}
-          onClick={() => setAdd(add == "building" ? "" : "building")}
-        >
-          <House className="mr-1" /> Дом/сарай/постройка
-        </Button>
-      </div>
+      <AreaButtons add={add} setAdd={setAdd} />
       <div className={s.area_container + " my-6"}>
         <svg
           ref={svgRef}
