@@ -47,7 +47,6 @@ export const apiCall = async (fn: FnType) => {
   const sb = await createClient();
   try {
     const { data, error } = await fn(sb);
-    console.log(data);
     if (error) {
       return new Response(JSON.stringify({ error: error.message }), {
         status: 400,

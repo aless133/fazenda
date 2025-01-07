@@ -33,7 +33,7 @@ export const useMutationCreate = <T>(key: string) => {
   return useMutation({
     mutationFn: async (data: Partial<T>) => {
       const url = new URL(`${theUrl}/api/${key}`);
-      return request<T[]>(url, {
+      return request<T>(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,7 +52,7 @@ export const useMutationUpdate = <T>(key: string, id: string) => {
   return useMutation({
     mutationFn: async (data: Partial<T>) => {
       const url = new URL(`${theUrl}/api/${key}/${id}`);
-      return request<T[]>(url, {
+      return request<T>(url, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -66,12 +66,12 @@ export const useMutationUpdate = <T>(key: string, id: string) => {
   });
 };
 
-export const useMutationDelete = <T>(key: string, id: string) => {
+export const useMutationDelete = (key: string, id: string) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async () => {
       const url = new URL(`${theUrl}/api/${key}/${id}`);
-      return request<T[]>(url, {
+      return request<null>(url, {
         method: "DELETE",
       });
     },

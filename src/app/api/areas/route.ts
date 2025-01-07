@@ -7,5 +7,5 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   const {id:_, ...newData} = await request.json();
-  return await apiCall((sb) => sb.from("areas").insert([newData]).select());
+  return await apiCall((sb) => sb.from("areas").insert([newData]).select().single());
 }

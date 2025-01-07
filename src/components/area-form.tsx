@@ -28,8 +28,8 @@ export const AreaForm: React.FC<AreaFormProps> = ({ initialData, back }) => {
     if (create.error) setError(create.error.message);
     if (del.error) setError(del.error.message);
 
-    if (update.isSuccess) router.push(getUrl(update.data[0]));
-    if (create.isSuccess) router.push(getUrl(create.data[0]));
+    if (update.isSuccess) router.push(getUrl(update.data));
+    if (create.isSuccess) router.push(getUrl(create.data));
     if (del.isSuccess) router.push("/areas/");
   }, [update.error, create.error, del.error, update.isSuccess, create.isSuccess, del.isSuccess]);
 
