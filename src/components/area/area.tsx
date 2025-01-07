@@ -74,8 +74,10 @@ export function Area({ area, children }: Props) {
     if (!add || !addDrag.includes(add)) return;
     if (!isSelecting || !selectionRect) return;
     const xy = getXY(getTouch(event));
-    if (xy)
+    if (xy) {
       setSelectionRect(new DOMRect(selectionRect.x, selectionRect.y, xy.x - selectionRect.x, xy.y - selectionRect.y));
+      event.preventDefault();
+    }
   };
 
   const handleTouchEnd = () => {
@@ -159,7 +161,7 @@ export function Area({ area, children }: Props) {
               {...rectToSVG(selectionRect)}
               stroke="red"
               strokeWidth="1"
-              vector-effect="non-scaling-stroke"
+              vectorEffect="non-scaling-stroke"
               fill="none"
             />
           ) : null}
