@@ -21,7 +21,7 @@ export const AreaForm: React.FC<AreaFormProps> = ({ initialData, back }) => {
   const router = useRouter();
   const create = useMutationCreate<IArea>("areas");
   const update = useMutationUpdate<IArea>("areas", initialData?.id ?? "");
-  const del = useMutationDelete<IArea>("areas", initialData?.id ?? "");
+  const del = useMutationDelete("areas", initialData?.id ?? "");
 
   useEffect(() => {
     if (update.error) setError(update.error.message);
