@@ -3,6 +3,7 @@ import s from "./area.module.css";
 import { type IArea } from "@/types";
 // import { Dimensions } from "./dimensions";
 import { AreaButtons } from "./buttons";
+import { SelectionRect } from "./selection-rect";
 
 type Props = {
   area: IArea;
@@ -42,13 +43,17 @@ export function Area({ area, children }: Props) {
     return { svgX, svgY };
   }
 
+  const rnd = (x: number) => {
+    return parseFloat(x.toFixed(1));
+  };
+
   const rectToSVG = (rect: DOMRect) => {
     const scale = getScale();
     return {
-      x: (rect.x - vb.x) * scale,
-      y: (rect.y - vb.y) * scale,
-      width: rect.width * scale,
-      height: rect.height * scale,
+      x: rnd((rect.x - vb.x) * scale),
+      y: rnd((rect.y - vb.y) * scale),
+      width: rnd(rect.width * scale),
+      height: rnd(rect.height * scale),
     };
   };
 
@@ -138,13 +143,7 @@ export function Area({ area, children }: Props) {
         >
           {children ? children : null}
           {selectionRect ? (
-            <rect
-              {...rectToSVG(selectionRect)}
-              stroke="red"
-              strokeWidth="1"
-              vectorEffect="non-scaling-stroke"
-              fill="none"
-            />
+            <SelectionRect rect={rectToSVG(selectionRect)}/>
           ) : null}
         </svg>
         <span className={s.width}>{area.width - area.x}</span>
