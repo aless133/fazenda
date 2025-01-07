@@ -6,11 +6,11 @@
 	width:100%;
 	border:1px solid grey;
 	border-radius:5px;
-	touch-action: none;
 }
 .area_add {
 	cursor: cell;
 	box-shadow: 0 0 10px hsl(var(--primary));
+	touch-action: none;
 }
 .width {
   position: absolute;
