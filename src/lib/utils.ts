@@ -24,3 +24,7 @@ export function getObjectName(type:string,feature?:string) {
   const key = feature ? `${type}.${feature}` : type;
   return objectNames[key as keyof typeof objectNames];
 }
+
+export const rnd = (x: number) => {
+  return parseFloat(x.toFixed(1));
+};

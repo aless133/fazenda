@@ -1,11 +1,11 @@
 import React, { useRef, useState } from "react";
 import s from "./area.module.css";
-import { type IArea } from "@/types";
+import { IPoint, type IArea, type IRect } from "@/types";
 // import { Dimensions } from "./dimensions";
 import { AreaButtons } from "./buttons";
 import { SelectionRect } from "./selection-rect";
 import { type ObjectDialogProps, ObjectDialog } from "../object-dialog";
-import { getObjectName } from "@/lib/utils";
+import { getObjectName, rnd } from "@/lib/utils";
 
 type Props = {
   area: IArea;
@@ -24,7 +24,7 @@ export function Area({ area, children }: Props) {
   const [vb, setVB] = useState({ x: area.x, y: area.y, width: area.width, height: area.length });
   const [add, setAdd] = useState("");
   const [isSelecting, setIsSelecting] = useState(false);
-  const [selectionRect, setSelectionRect] = useState<DOMRect | null>(null);
+  const [selectionRect, setSelectionRect] = useState<IRect | null>(null);
   const [objectDialogProps, setObjectDialogProps] = useState<ObjectDialogProps>({
     title: "",
     descr: "",
@@ -34,7 +34,7 @@ export function Area({ area, children }: Props) {
   const svgRef = useRef<SVGSVGElement | null>(null);
 
   const getTouch = (event: React.TouchEvent<SVGSVGElement>) => event.touches[0];
-  const getXY = (event: TClientXY) => {
+  const getXY = (event: TClientXY): IPoint => {
     const rect = svgRef.current!.getBoundingClientRect();
     return { x: event.clientX - rect.left, y: event.clientY - rect.top };
   };
@@ -44,18 +44,15 @@ export function Area({ area, children }: Props) {
     return vb.width / rect.width;
   };
 
-  function pointToSVG(x: number, y: number): { svgX: number; svgY: number } {
+  const pointToSVG = (point: IPoint): IPoint => {
     const scale = getScale();
-    const svgX = (x - vb.x) * scale;
-    const svgY = (y - vb.y) * scale;
-    return { svgX, svgY };
-  }
-
-  const rnd = (x: number) => {
-    return parseFloat(x.toFixed(1));
+    return {
+      x: rnd((point.x - vb.x) * scale),
+      y: rnd((point.y - vb.y) * scale),
+    };
   };
 
-  const rectToSVG = (rect: DOMRect) => {
+  const rectToSVG = (rect: IRect): IRect => {
     const scale = getScale();
     return {
       x: rnd((rect.x - vb.x) * scale),
@@ -79,7 +76,7 @@ export function Area({ area, children }: Props) {
     if (xy) {
       event.preventDefault();
       event.stopPropagation();
-      setSelectionRect(new DOMRect(xy.x, xy.y, 0, 0));
+      setSelectionRect(rectToSVG({ x: xy.x, y: xy.y, width: 0, height: 0 }));
       setIsSelecting(true);
     }
   };
@@ -91,7 +88,13 @@ export function Area({ area, children }: Props) {
     if (xy) {
       event.preventDefault();
       event.stopPropagation();
-      setSelectionRect(new DOMRect(selectionRect.x, selectionRect.y, xy.x - selectionRect.x, xy.y - selectionRect.y));
+      const p = pointToSVG(xy);
+      setSelectionRect({
+        x: selectionRect.x,
+        y: selectionRect.y,
+        width: p.x - selectionRect.x,
+        height: p.y - selectionRect.y,
+      });
     }
   };
 
@@ -107,7 +110,9 @@ export function Area({ area, children }: Props) {
     if (!add || !addByDrag.includes(add)) return;
     const xy = getXY(event);
     if (xy) {
-      setSelectionRect(new DOMRect(xy.x, xy.y, 0, 0));
+      console.log("start xy", xy);
+      console.log("start rect", rectToSVG({ x: xy.x, y: xy.y, width: 0, height: 0 }));
+      setSelectionRect(rectToSVG({ x: xy.x, y: xy.y, width: 0, height: 0 }));
       setIsSelecting(true);
     }
   };
@@ -117,7 +122,13 @@ export function Area({ area, children }: Props) {
     if (!isSelecting || !selectionRect) return;
     const xy = getXY(event);
     if (xy) {
-      setSelectionRect(new DOMRect(selectionRect.x, selectionRect.y, xy.x - selectionRect.x, xy.y - selectionRect.y));
+      const p = pointToSVG(xy);
+      setSelectionRect({
+        x: selectionRect.x,
+        y: selectionRect.y,
+        width: p.x - selectionRect.x,
+        height: p.y - selectionRect.y,
+      });
     }
   };
 
@@ -172,7 +183,7 @@ export function Area({ area, children }: Props) {
           onTouchEnd={handleTouchEnd}
         >
           {children ? children : null}
-          {selectionRect ? <SelectionRect rect={rectToSVG(selectionRect)} /> : null}
+          {selectionRect ? <SelectionRect rect={selectionRect} /> : null}
         </svg>
         <span className={s.width}>{area.width - area.x}</span>
         <span className={s.length}>{area.length - area.y}</span>

@@ -1,3 +1,4 @@
+import { rnd } from "@/lib/utils";
 import React from "react";
 
 interface Props {
@@ -23,7 +24,7 @@ export function SelectionRect({ rect }: Props) {
         vectorEffect="non-scaling-size"
         style={{ userSelect: 'none' }}
       >
-        {`${rect.width}x${rect.height}`}
+        {`${rnd(rect.width)}x${rnd(rect.height)}`}
       </text>
     </>
   );
