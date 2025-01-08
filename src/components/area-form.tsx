@@ -53,7 +53,7 @@ export const AreaForm: React.FC<AreaFormProps> = ({ initialData, back }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="m-auto max-w-xs flex-col space-y-4">
+    <form onSubmit={handleSubmit} className="m-auto max-w-xs flex-col gap-4">
       {error && <div className="text-red-500 md:col-span-2">{error}</div>}
       <div className="">
         <Label htmlFor="name">Название</Label>

@@ -21,6 +21,7 @@ export function SelectionRect({ rect }: Props) {
         textAnchor="middle"
         alignmentBaseline="central"
         vectorEffect="non-scaling-size"
+        style={{ userSelect: 'none' }}
       >
         {`${rect.width}x${rect.height}`}
       </text>

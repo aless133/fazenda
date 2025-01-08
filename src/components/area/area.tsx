@@ -4,6 +4,8 @@ import { type IArea } from "@/types";
 // import { Dimensions } from "./dimensions";
 import { AreaButtons } from "./buttons";
 import { SelectionRect } from "./selection-rect";
+import { type ObjectDialogProps, ObjectDialog } from "../object-dialog";
+import { getObjectName } from "@/lib/utils";
 
 type Props = {
   area: IArea;
@@ -15,14 +17,20 @@ type TClientXY = {
   clientY: number;
 };
 
-const addDrag = ["bed", "building"];
-const addPoint = ["tree"];
+const addByDrag = ["bed", "building"];
+const addByPoint = ["tree"];
 
 export function Area({ area, children }: Props) {
   const [vb, setVB] = useState({ x: area.x, y: area.y, width: area.width, height: area.length });
   const [add, setAdd] = useState("");
   const [isSelecting, setIsSelecting] = useState(false);
   const [selectionRect, setSelectionRect] = useState<DOMRect | null>(null);
+  const [objectDialogProps, setObjectDialogProps] = useState<ObjectDialogProps>({
+    title: "",
+    descr: "",
+    callback: (d) => null,
+    open: false,
+  });
   const svgRef = useRef<SVGSVGElement | null>(null);
 
   const getTouch = (event: React.TouchEvent<SVGSVGElement>) => event.touches[0];
@@ -58,7 +66,7 @@ export function Area({ area, children }: Props) {
   };
 
   const handleClick = (event: React.MouseEvent<SVGSVGElement>) => {
-    if (!add || !addPoint.includes(add)) return;
+    if (!add || !addByPoint.includes(add)) return;
     if (isSelecting) return;
     const xy = getXY(event);
     setAdd("");
@@ -66,7 +74,7 @@ export function Area({ area, children }: Props) {
   };
 
   const handleTouchStart = (event: React.TouchEvent<SVGSVGElement>) => {
-    if (!add || !addDrag.includes(add)) return;
+    if (!add || !addByDrag.includes(add)) return;
     const xy = getXY(getTouch(event));
     if (xy) {
       event.preventDefault();
@@ -77,7 +85,7 @@ export function Area({ area, children }: Props) {
   };
 
   const handleTouchMove = (event: React.TouchEvent<SVGSVGElement>) => {
-    if (!add || !addDrag.includes(add)) return;
+    if (!add || !addByDrag.includes(add)) return;
     if (!isSelecting || !selectionRect) return;
     const xy = getXY(getTouch(event));
     if (xy) {
@@ -88,17 +96,15 @@ export function Area({ area, children }: Props) {
   };
 
   const handleTouchEnd = (event: React.TouchEvent<SVGSVGElement>) => {
-    if (!add || !addDrag.includes(add)) return;
+    if (!add || !addByDrag.includes(add)) return;
     if (!isSelecting || !selectionRect) return;
     event.preventDefault();
     event.stopPropagation();
-    setAdd("");
-    setIsSelecting(false);
-    console.log("Selection Rect:", selectionRect);
+    addSelectionRect();
   };
 
   const handleMouseDown = (event: React.MouseEvent<SVGSVGElement>) => {
-    if (!add || !addDrag.includes(add)) return;
+    if (!add || !addByDrag.includes(add)) return;
     const xy = getXY(event);
     if (xy) {
       setSelectionRect(new DOMRect(xy.x, xy.y, 0, 0));
@@ -107,7 +113,7 @@ export function Area({ area, children }: Props) {
   };
 
   const handleMouseMove = (event: React.MouseEvent<SVGSVGElement>) => {
-    if (!add || !addDrag.includes(add)) return;
+    if (!add || !addByDrag.includes(add)) return;
     if (!isSelecting || !selectionRect) return;
     const xy = getXY(event);
     if (xy) {
@@ -116,11 +122,35 @@ export function Area({ area, children }: Props) {
   };
 
   const handleMouseUp = () => {
-    if (!add || !addDrag.includes(add)) return;
+    if (!add || !addByDrag.includes(add)) return;
     if (!isSelecting || !selectionRect) return;
-    setAdd("");
-    setIsSelecting(false);
+    addSelectionRect();
+  };
+
+  const addSelectionRect = () => {
     console.log("Selection Rect:", selectionRect);
+    setIsSelecting(false);
+    if (selectionRect) {
+      const o = {
+        name: getObjectName(add, "new"),
+        type: add,
+        x: selectionRect.x,
+        y: selectionRect.y,
+        width: selectionRect.width,
+        length: selectionRect.height,
+      };
+      setObjectDialogProps({
+        title: "Добавить новый объект",
+        descr: `${getObjectName(add)} размером ${selectionRect.width}x${selectionRect.height}`,
+        data: o,
+        callback: (data) => {
+          setObjectDialogProps((prev) => ({ ...prev, open: false }));
+          setSelectionRect(null);
+        },
+        open: true,
+      });
+    }
+    setAdd("");
   };
 
   return (
@@ -142,13 +172,12 @@ export function Area({ area, children }: Props) {
           onTouchEnd={handleTouchEnd}
         >
           {children ? children : null}
-          {selectionRect ? (
-            <SelectionRect rect={rectToSVG(selectionRect)}/>
-          ) : null}
+          {selectionRect ? <SelectionRect rect={rectToSVG(selectionRect)} /> : null}
         </svg>
         <span className={s.width}>{area.width - area.x}</span>
         <span className={s.length}>{area.length - area.y}</span>
       </div>
+      <ObjectDialog {...objectDialogProps} />
     </div>
   );
 }
